@@ -9,27 +9,112 @@ Unauthorized access is strictly prohibited. #
 ! SVI CONF step 2
 ip default-gateway 192.168.1.129
 
-! vlan 4 gets ip
-interface vlan 4
-ip address 10.1.4.6 255.255.255.252
-no shutdown
-exit
-
 ! asign all ports to vlan 200
 interface range Gi1/0/1 - 28
 switchport access Vlan 200
-exit
 
 ! password
 line con 0
 password cisco
 login
 logging synchronous
-exit
 
 ! vty for telnet
 line vty 0 15
 password cisco
 login
+exit
+
+!vlan setup
+vlan 1
+name DSW1-DSW2
+vlan 4
+name DSW1-Core
+vlan 10
+name Client_Bygn.1
+vlan 20
+name Client_bygn.2
+vlan 99
+name Native
+vlan 150
+name Voice
+vlan 200
+name Management_Netw
+vlan 250
+name Printer
+vlan 999
+name Black_Hole
+
+! vlan assigned ipv4 n ipv6
+!4.3.8
+interface vlan 1
+ip address 10.2.4.13 255.255.255.252
+ipv6 address 2026:3::1/64
+no shutdown
+
+interface vlan 4
+ip address 10.1.4.6 255.255.255.252
+ipv6 address 2026:2::2/64
+no shutdown
+
+interface vlan 10
+ip address 10.2.1.1 255.255.255.0
+ipv6 address 2026:10::1/64
+no shutdown
+
+interface vlan 20
+ip address 10.2.2.1 255.255.255.128
+ipv6 address 2026:20::1/64
+no shutdown
+
+interface vlan 150
+ip address 10.2.3.1 255.255.255.0
+no shutdown
+
+interface vlan 200
+ip address 192.168.1.129 255.255.255.224
+no shutdown
+
+interface vlan 250
+ip address 10.2.3.129 255.255.255.224
+no shutdown
+
+!gigabitethernet int configs
+interface range gi1/0/1-28
+switchport mode access
+switchport access vlan 999
+switchport nonegotiate
+shutdown
+
+interface gi1/0/19
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk encapsulation dot1q
+switchport trunk allowed vlan 10,20,150,200,250
+no shutdown
+
+interface gi1/0/21
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk encapsulation dot1q
+switchport trunk allowed vlan 10,20,150,200,250
+no shutdown
+
+!4.3.8
+interface gi1/0/1
+switchport mode access
+switchport access vlan 4
+no shutdown
+
+interface gi1/0/23
+switchport mode access
+switchport access vlan 1
+no shutdown
+
+interface loopback 1
+ip address 11.11.11.11 255.255.255.255
+ipv6 address FEC0:11::1/64
+no shutdown
+
 exit
 do wr
