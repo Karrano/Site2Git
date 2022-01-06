@@ -48,7 +48,7 @@ name Black_Hole
 ! vlan assigned ipv4 n ipv6
 !4.3.8
 interface vlan 1
-ip address 10.2.4.13 255.255.255.252
+ip address 10.2.4.14 255.255.255.252
 ipv6 address 2026:3::1/64
 no shutdown
 
