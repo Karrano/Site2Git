@@ -1,0 +1,51 @@
+no ip domain-lookup
+hostname ASW1
+service password-encryption
+enable secret class
+banner motd #
+Unauthorized access is strictly prohibited. #
+
+!SVI CONF step 1 [1.1.6]
+
+configure terminal
+interface vlan 5
+ip address 10.1.4.10 255.255.255.252
+no shutdown
+end
+copy running-config startup-config
+
+!SVI CONF step 2
+
+configure terminal
+ip default-gateway 192.168.1.129
+end
+copy running-config startup-config
+
+!asign all ports to vlan 200
+
+configure terminal
+interface range Gi1/0/1 - 28
+switchport access Vlan 200
+end
+copy running-config startup-config
+
+verify: show vlan brief
+
+!password
+
+configure terminal
+line con 0
+password cisco
+login
+logging synchronous
+end
+copy running-config startup-config
+
+!vty for telnet
+
+configure terminal
+line vty 0 15
+password cisco
+login
+end
+copy running-config startup-config

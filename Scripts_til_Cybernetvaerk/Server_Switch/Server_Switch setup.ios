@@ -1,0 +1,87 @@
+configure terminal
+no ip domain-lookup
+hostname Server_Switch
+ip domain-name cyber.ntw
+service password-encryption
+enable secret class
+banner motd #
+Unauthorized access is strictly prohibited. #
+ip default-gateway 192.168.1.129
+security password min-length 12
+username Manager secret 55Hadm!n2020
+username Brucewayne privilege 15 secret op10muserPrime!
+crypto key generate rsa general-keys modulus 1024
+enable secret $cisco!PRIV*
+password $cisco!!CON*
+line vty 0 4
+password $cisco!!VTY*
+login
+transport input ssh
+login local
+exec-timeout 4
+login block-for 120 attempts 3 within 60
+Sdm prefer lanbase-routing
+
+!SVI CONF step 1 [1.1.6]
+interface vlan 210
+ip address 192.168.2.131 255.255.255.224
+no shutdown
+exit
+
+!asign all ports to vlan 210
+!verify: show vlan brief
+interface range Gi1/0/1 - 28
+switchport access Vlan 210
+
+!password
+line con 0
+password cisco
+login
+logging synchronous
+
+!vty for telnet
+line vty 0 15
+password cisco
+login
+exit
+
+!Opsætning af vlan
+vlan 50
+no shutdown
+name Server
+vlan 99
+name Native
+no shutdown
+vlan 210
+name Management_Netw_Server
+int vlan 210
+ip add 192.168.2.131 255.255.255.224
+no shutdown
+vlan 220
+name Printer
+no shutdown
+vlan 300
+name Internet
+no shutdown
+vlan 999
+name Black_Hole
+no shutdown
+exit
+
+!Opsætning af interfaces
+int range g1/0/3-22
+switchport acces vlan 999
+switchport nonegotiate
+shutdown
+int g1/0/3
+sw m trunk
+sw trunk native vlan 99
+switchport trunk allowed vlan 1,50,99,210,220
+int g1/0/7
+sw m a
+sw a v 300
+int g1/0/25
+sw m trunk
+sw trunk allowed vlan 1,60,99,210,300
+exit
+do wr

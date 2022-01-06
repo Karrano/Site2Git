@@ -1,0 +1,41 @@
+conf t
+vlan 1
+name DSW1-DSW2
+vlan 5
+name DSW2-Core
+vlan 10
+name Client_Bygn.1
+vlan 20
+name Client_bygn.2
+vlan 99
+name Native
+vlan 150
+name Voice
+vlan 200
+name Management_Netw
+vlan 250
+name Printer
+vlan 999
+name Black_Hole
+
+conf t
+interface range gi1/0/1-28
+switchport mode access
+switchport access vlan 999
+switchport nonegotiate
+shutdown
+
+interface gi1/0/19
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,150,200,250
+no shutdown
+
+interface gi1/0/21
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,150,200,250
+no shutdown
+
+end
+write

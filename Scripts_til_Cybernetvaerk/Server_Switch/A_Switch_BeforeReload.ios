@@ -1,0 +1,3 @@
+configure terminal
+sdm prefer lanbase-routing
+!clock set [hh:mm:ss][month][day][year]

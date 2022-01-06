@@ -1,0 +1,46 @@
+configure terminal
+hostname BorderRouter
+enable secret $cisco!PRIV*
+ipv6 unicast-routing
+line console 0
+password $cisco!!CON*
+login
+exit
+
+service password-encryption
+banner motd #
+Unauthorized access is strictly prohibited. #
+ip domain-name cyber.ntw
+no ip domain lookup
+security password min-length 12
+username Manager secret 55Hadm!n2020
+username Brucewayne privilege 15 secret op10muserPrime!
+crypto key generate rsa general-keys modulus 1024
+login block-for 120 attempts 3 within 60
+ip route 0.0.0.0 0.0.0.0 10.5.0.1
+
+line vty 0 4
+password $cisco!!VTY*
+login
+transport input ssh
+login local
+exec-timeout 4
+
+interface gigabitethernet 0/0/0
+ip address 10.5.0.2 255.255.255.252
+ipv6 address 2026:1::1/64
+ipv6 address FE80::1 link-local
+description CoreSwitch
+no shutdown
+
+interface gigabitethernet 0/0/1
+ip address 10.11.0.1 255.255.255.224
+description ServerSwitch
+no shutdown
+
+interface loopback 1
+ip address 1.1.1.1 255.255.255.255
+description Loopback
+no shutdown
+exit
+do wr
