@@ -5,6 +5,7 @@ service password-encryption
 enable secret class
 banner motd #
 Unauthorized access is strictly prohibited. #
+ip routing
 
 ! SVI CONF step 2
 ip default-gateway 192.168.1.130
@@ -31,5 +32,69 @@ exit
 line vty 0 15
 password cisco
 login
+
+!Opsætning af Vlans
+
+vlan 10
+name Client_Bygn.1
+no shutdown
+vlan 20
+name Client_bygn.2
+no shutdown
+vlan 99
+name Native
+no shutdown
+vlan 150
+name Voice
+no shutdown
+vlan 200
+name Management_Netw
+no shutdown
+vlan 250
+name Printer
+no shutdown
+int vlan 200
+ip add 192.168.1.32 255.255.255.224
+no shutdown
 exit
-do wr
+vlan 999
+name Black_Hole
+exit
+ip default-gateway 192.168.1.130
+
+
+#Opsætning af interfaces
+int range g1/0/3-22
+switchport acces vlan 999
+switchport nonegotiate
+shutdown
+int g1/0/25
+switchport acces vlan 999
+shutdown
+interface range g1/0/1-2
+switchport mode access
+switchport access vlan 20
+no shutdown
+
+interface g1/0/19
+switchport mode trunk
+switchport trunk native vlan 99
+ 
+no shutdown
+interface g1/0/21
+switchport mode trunk
+switchport trunk native vlan 99
+no shutdown
+interface g1/0/23
+switchport mode access
+switchport access vlan 20
+switchport voice vlan 150
+mls qos trust cos
+no shutdown
+interface g1/0/24
+switchport mode access 
+switchport access vlan 250
+no shutdown
+end
+
+write
