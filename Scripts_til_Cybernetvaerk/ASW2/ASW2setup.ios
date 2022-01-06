@@ -12,15 +12,6 @@ ipv6 unicast-routing
 ip default-gateway 192.168.1.130
 
 ! vlan 200 gets ip
-interface vlan 200
-ip address 192.168.1.132 255.255.255.224
-no shutdown
-exit
-
-! asign all ports to vlan 200
-interface range Gi1/0/1 - 28
-switchport access Vlan 200
-exit
 
 ! password
 line con 0
@@ -30,6 +21,7 @@ logging synchronous
 exit
 
 ! vty for telnet
+! TODO Slet TelNet og opsæt SSH
 line vty 0 15
 password cisco
 login
@@ -63,15 +55,21 @@ name Black_Hole
 exit
 ip default-gateway 192.168.1.130
 
+interface vlan 200
+ip address 192.168.1.132 255.255.255.224
+no shutdown
+exit
 
 #Opsætning af interfaces
-int range g1/0/3-22
-switchport acces vlan 999
+int range g1/0/1-28
+switchport access vlan 999
 switchport nonegotiate
 shutdown
-int g1/0/25
-switchport acces vlan 999
 shutdown
+shutdown
+shutdown
+! Jeg ved ikke hvorfor, men det virker kun når man shutdowner flere gange :,(
+
 interface range g1/0/1-2
 switchport mode access
 switchport access vlan 20
@@ -80,11 +78,13 @@ no shutdown
 interface g1/0/19
 switchport mode trunk
 switchport trunk native vlan 99
+no switchport access vlan 999
  
 no shutdown
 interface g1/0/21
 switchport mode trunk
 switchport trunk native vlan 99
+no switchport access vlan 999
 no shutdown
 interface g1/0/23
 switchport mode access
