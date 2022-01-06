@@ -1,13 +1,13 @@
 configure terminal
 no ip domain-lookup
-hostname DSW1
+hostname DSW2
 service password-encryption
 enable secret class
 banner motd #
 Unauthorized access is strictly prohibited. #
 
 ! SVI CONF step 2
-ip default-gateway 10.1.4.5
+ip default-gateway 10.1.4.9
 
 ! asign all ports to vlan 200
 interface range Gi1/0/1 - 28
@@ -52,31 +52,31 @@ ip address 10.2.4.13 255.255.255.252
 ipv6 address 2026:3::1/64
 no shutdown
 
-interface vlan 4
-ip address 10.1.4.6 255.255.255.252
-ipv6 address 2026:2::2/64
+interface vlan 5
+ip address 10.2.4.14 255.255.255.252
+ipv6 address 2026:3::2/64
 no shutdown
 
 interface vlan 10
-ip address 10.2.1.1 255.255.255.0
-ipv6 address 2026:10::1/64
+ip address 10.2.1.2 255.255.255.0
+ipv6 address 2026:10::2/64
 no shutdown
 
 interface vlan 20
-ip address 10.2.2.1 255.255.255.128
-ipv6 address 2026:20::1/64
+ip address 10.2.2.2 255.255.255.0
+ipv6 address 2026:20::2/64
 no shutdown
 
 interface vlan 150
-ip address 10.2.3.1 255.255.255.0
+ip address 10.2.3.2 255.255.255.128
 no shutdown
 
 interface vlan 200
-ip address 192.168.1.129 255.255.255.224
+ip address 192.168.1.130 255.255.255.224
 no shutdown
 
 interface vlan 250
-ip address 10.2.3.129 255.255.255.224
+ip address 10.2.3.130 255.255.255.128
 no shutdown
 
 !gigabitethernet int configs
@@ -103,7 +103,7 @@ no shutdown
 !4.3.8
 interface gi1/0/1
 switchport mode access
-switchport access vlan 4
+switchport access vlan 5
 no shutdown
 
 interface gi1/0/23
@@ -111,9 +111,9 @@ switchport mode access
 switchport access vlan 1
 no shutdown
 
-interface loopback 1
-ip address 11.11.11.11 255.255.255.255
-ipv6 address FEC0:11::1/64
+interface loopback 2
+ip address 22.22.22.22 255.255.255.255
+ipv6 address FEC0:22::2/64
 no shutdown
 
 exit
