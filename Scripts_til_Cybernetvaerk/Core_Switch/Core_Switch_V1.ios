@@ -1,4 +1,27 @@
+configure terminal
+no ip domain-lookup
+hostname Core_Switch
+service password-encryption
+enable secret class
+banner motd #
+Unauthorized access is strictly prohibited. #
+ip routing
+ipv6 unicast-routing
 
+ip default-gateway 192.168.2.129
+
+
+! password
+line con 0
+password cisco
+login
+logging synchronous
+exit
+
+! vty for telnet
+line vty 0 15
+password cisco
+login
 
 #Opsætning af vlan
 configure terminal
@@ -13,6 +36,7 @@ name Management_Netw_Server
 no shutdown
 int vlan210
 ip add 192.168.2.130 255.255.255.224
+no shutdown
 vlan 300
 name Internet
 no shutdown
@@ -20,11 +44,10 @@ vlan 999
 name Black_Hole
 no shutdown
 exit
-ip default-gateway 192.168.2.129
 
 !Opsætning af interfaces
 conf t
-int range g1/0/4-22
+int range g1/01/1-28
 switchport acces vlan 999
 switchport nonegotiate
 shutdown
@@ -36,11 +59,13 @@ int g1/0/2
 switchport mode trunk
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,50,99,210,300
+no switchport access vlan 999
 no shutdown
 int g1/0/3
 switchport mode trunk
 switchport trunk native Vlan 99
 switchport trunk allowed vlan 1,5,99,210
+no switchport access vlan 999
 no shutdown
 int g1/0/4
 switchport mode access
