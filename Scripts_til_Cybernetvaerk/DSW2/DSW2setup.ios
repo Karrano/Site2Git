@@ -89,7 +89,6 @@ shutdown
 interface gi1/0/19
 switchport mode trunk
 switchport trunk native vlan 99
-switchport trunk encapsulation dot1q
 no switchport access vlan 999
 switchport trunk allowed vlan 10,20,150,200,250
 no shutdown
@@ -97,7 +96,6 @@ no shutdown
 interface gi1/0/21
 switchport mode trunk
 switchport trunk native vlan 99
-switchport trunk encapsulation dot1q
 switchport access vlan 999
 switchport trunk allowed vlan 10,20,150,200,250
 no shutdown
