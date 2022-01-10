@@ -6,20 +6,10 @@ enable secret class
 banner motd #
 Unauthorized access is strictly prohibited. #
 ip routing
+ipv6 unicast-routing
 
 ! SVI CONF step 2
 ip default-gateway 192.168.1.129
-
-! vlan 200 gets ip 
-interface vlan 200
-ip address 192.168.1.131 255.255.255.224
-no shutdown
-exit
-
-! asign all ports to vlan 200
-interface range Gi1/0/1 - 28
-switchport access Vlan 200
-exit
 
 ! password
 line con 0
@@ -29,26 +19,40 @@ logging synchronous
 exit
 
 ! vty for telnet
+! TODO Slet TelNet og opsæt SSH
 line vty 0 15
 password cisco
 login
 
+!Opsætning af Vlans
 vlan 10
 name Client_Bygn.1
+no shutdown
 vlan 20
 name Client_bygn.2
+no shutdown
 vlan 99
 name Native
+no shutdown
 vlan 150
 name Voice
+no shutdown
 vlan 200
 name Management_Netw
+no shutdown
 vlan 250
 name Printer
-int vlan 200
-ip add 192.168.1.131 255.255.255.224
+no shutdown
+vlan 999
+name Black_Hole
+shutdown
 
-conf t
+! vlan 200 gets ip
+interface vlan 200
+ip address 192.168.1.131 255.255.255.224
+no shutdown
+
+!Opsætning af interfaces
 interface range gi1/0/1-28
 switchport mode access
 switchport access vlan 999
@@ -63,21 +67,26 @@ no shutdown
 interface gi1/0/19
 switchport mode trunk
 switchport trunk native vlan 99
+no switchport access vlan 999 
 no shutdown
 
 interface gi1/0/21
 switchport mode trunk
 switchport trunk native vlan 99
+no switchport access vlan 999
 no shutdown
 
 interface gi1/0/23
 switchport mode access
-switchport acess vlan 20
-mls qos trust cos
+switchport access vlan 20
 switchport voice vlan 150
+mls qos trust cos
 no shutdown
 
 interface gi1/0/24
 switchport mode access
 switchport access vlan 250
 no shutdown
+end
+
+write

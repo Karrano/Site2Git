@@ -11,8 +11,6 @@ ipv6 unicast-routing
 ! SVI CONF step 2
 ip default-gateway 192.168.1.130
 
-! vlan 200 gets ip
-
 ! password
 line con 0
 password cisco
@@ -27,7 +25,6 @@ password cisco
 login
 
 !Opsætning af Vlans
-
 vlan 10
 name Client_Bygn.1
 no shutdown
@@ -46,53 +43,47 @@ no shutdown
 vlan 250
 name Printer
 no shutdown
-int vlan 200
-ip add 192.168.1.32 255.255.255.224
-no shutdown
-exit
 vlan 999
 name Black_Hole
-exit
-ip default-gateway 192.168.1.130
+shutdown
 
+! vlan 200 gets ip
 interface vlan 200
 ip address 192.168.1.132 255.255.255.224
 no shutdown
-exit
 
-#Opsætning af interfaces
-int range g1/0/1-28
+!Opsætning af interfaces
+interface range gi1/0/1-28
+switchport mode access
 switchport access vlan 999
 switchport nonegotiate
 shutdown
-shutdown
-shutdown
-shutdown
-! Jeg ved ikke hvorfor, men det virker kun når man shutdowner flere gange :,(
 
-interface range g1/0/1-2
+interface range gi1/0/1-2
 switchport mode access
 switchport access vlan 20
 no shutdown
 
-interface g1/0/19
+interface gi1/0/19
+switchport mode trunk
+switchport trunk native vlan 99
+no switchport access vlan 999 
+no shutdown
+
+interface gi1/0/21
 switchport mode trunk
 switchport trunk native vlan 99
 no switchport access vlan 999
- 
 no shutdown
-interface g1/0/21
-switchport mode trunk
-switchport trunk native vlan 99
-no switchport access vlan 999
-no shutdown
-interface g1/0/23
+
+interface gi1/0/23
 switchport mode access
 switchport access vlan 20
 switchport voice vlan 150
 mls qos trust cos
 no shutdown
-interface g1/0/24
+
+interface gi1/0/24
 switchport mode access 
 switchport access vlan 250
 no shutdown
