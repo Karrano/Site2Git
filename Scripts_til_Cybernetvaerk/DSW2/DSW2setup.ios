@@ -64,6 +64,10 @@ ip address 10.2.1.2 255.255.255.0
 ip helper-address 10.1.21.129
 ipv6 dhcp relay destination FEC0::21:1 
 ipv6 address 2026:10::2/64
+standby version 2
+standby 10 ip 10.2.1.254
+standby 10 priority 150
+standby 10 preempt
 no shutdown
 
 interface vlan 20
@@ -71,6 +75,10 @@ ip address 10.2.2.2 255.255.255.0
 ip helper-address 10.1.21.129
 ipv6 dhcp relay destination FEC0::21:1 
 ipv6 address 2026:20::2/64
+standby version 2
+standby 20 ip 10.2.1.254
+standby 20 priority 150
+standby 20 preempt
 no shutdown
 
 interface vlan 150
@@ -92,6 +100,7 @@ switchport access vlan 999
 switchport nonegotiate
 shutdown
 
+no interface po24
 !EtherChannel Group 24 conf
 interface range gi1/0/19-20
 shutdown 
@@ -104,6 +113,7 @@ switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
 no shutdown
 
+no interface po23
 !EtherChannel Group 23 conf
 interface range gi1/0/21-22
 shutdown 

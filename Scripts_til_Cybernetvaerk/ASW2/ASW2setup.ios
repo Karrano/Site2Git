@@ -66,12 +66,7 @@ switchport mode access
 switchport access vlan 20
 no shutdown
 
-!interface gi1/0/19
-!switchport mode trunk
-!switchport trunk native vlan 99
-!no switchport access vlan 999 
-!no shutdown
-
+no interface po24
 !EtherChannel Group 24 conf
 interface range gi1/0/19-20
 shutdown 
@@ -83,12 +78,7 @@ switchport mode trunk
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
 no shutdown
-!interface gi1/0/21
-!switchport mode trunk
-!switchport trunk native vlan 99
-!no switchport access vlan 999
-!no shutdown
-
+no interface go14
 !EtherChannel Group 14 conf
 interface range gi1/0/21-22
 shutdown 

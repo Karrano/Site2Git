@@ -28,8 +28,6 @@ login
 exit
 
 !vlan setup
-vlan 1
-name DSW1-DSW2
 vlan 4
 name DSW1-Core
 vlan 10
@@ -64,6 +62,9 @@ ip address 10.2.1.1 255.255.255.0
 ip helper-address 10.1.21.129 
 ipv6 dhcp relay destination FEC0::21:1
 ipv6 address 2026:10::1/64
+standby version 2
+standby 10 ip 10.2.1.254
+standby 10 preempt
 no shutdown
 
 interface vlan 20
@@ -71,6 +72,9 @@ ip address 10.2.2.1 255.255.255.0
 ip helper-address 10.1.21.129
 ipv6 dhcp relay destination FEC0::21:1 
 ipv6 address 2026:20::1/64
+standby version 2
+standby 20 ip 10.2.1.254
+standby 20 preempt
 no shutdown
 
 interface vlan 150
@@ -92,6 +96,7 @@ switchport access vlan 999
 switchport nonegotiate
 shutdown
 
+no interface po13
 !EtherChannel Group 13 conf
 interface range gi1/0/19-20
 shutdown 
@@ -104,6 +109,7 @@ switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
 no shutdown
 
+no interface po14
 !EtherChannel Group 14 conf
 interface range gi1/0/21-22
 shutdown 
@@ -125,7 +131,6 @@ no shutdown
 interface gi1/0/23
 switchport mode access
 switchport access vlan 1
-ipv6 address 2026:3::2/64
 no shutdown
 
 interface loopback 1
