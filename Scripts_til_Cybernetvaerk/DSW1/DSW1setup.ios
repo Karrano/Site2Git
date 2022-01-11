@@ -9,8 +9,10 @@ enable secret class
 banner motd #
 Unauthorized access is strictly prohibited. #
 ip routing
+ipv6 unicast-routing
 
 ! SVI CONF step 2
+ip route 0.0.0.0 0.0.0.0 10.1.4.5
 ip default-gateway 10.1.4.5
 
 ! password
@@ -59,11 +61,15 @@ no shutdown
 
 interface vlan 10
 ip address 10.2.1.1 255.255.255.0
+ip helper-address 10.1.21.129 
+ipv6 dhcp relay destination FEC0::21:1
 ipv6 address 2026:10::1/64
 no shutdown
 
 interface vlan 20
 ip address 10.2.2.1 255.255.255.0
+ip helper-address 10.1.21.129
+ipv6 dhcp relay destination FEC0::21:1 
 ipv6 address 2026:20::1/64
 no shutdown
 
@@ -114,7 +120,6 @@ no shutdown
 interface gi1/0/1
 switchport mode access
 switchport access vlan 4
-ipv6 address 2026:2::2/64
 no shutdown
 
 interface gi1/0/23
