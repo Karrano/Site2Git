@@ -1,51 +1,93 @@
+configure terminal
 no ip domain-lookup
-hostname ASW1
+hostname ServerRum_Switch
+ip domain-name cyber.ntw
 service password-encryption
 enable secret class
 banner motd #
 Unauthorized access is strictly prohibited. #
+ip default-gateway 192.168.1.129
+security password min-length 12
+username Manager secret 55Hadm!n2020
+username Brucewayne privilege 15 secret op10muserPrime!
+crypto key generate rsa general-keys modulus 1024
+enable secret $cisco!PRIV*
+password $cisco!!CON*
+
+line vty 0 4
+password $cisco!!VTY*
+login
+transport input ssh
+login local
+exec-timeout 4
+login block-for 120 attempts 3 within 60
+exit
+ssh version 2
 
 !SVI CONF step 1 [1.1.6]
-
-configure terminal
-interface vlan 5
-ip address 10.1.4.10 255.255.255.252
+interface vlan 210
+ip address 192.168.2.132 255.255.255.224
 no shutdown
-end
-copy running-config startup-config
-
-!SVI CONF step 2
-
-configure terminal
-ip default-gateway 192.168.1.129
-end
-copy running-config startup-config
-
-!asign all ports to vlan 200
-
-configure terminal
-interface range Gi1/0/1 - 28
-switchport access Vlan 200
-end
-copy running-config startup-config
-
-verify: show vlan brief
+exit
 
 !password
-
-configure terminal
 line con 0
 password cisco
 login
 logging synchronous
-end
-copy running-config startup-config
 
 !vty for telnet
-
-configure terminal
 line vty 0 15
 password cisco
 login
+exit
+
+!Opsætning af vlan
+vlan 50
+no shutdown
+name Server
+
+vlan 99
+name Native
+no shutdown
+
+vlan 210
+name Management_Netw_Server
+
+vlan 220
+name Printer
+no shutdown
+
+vlan 300
+name Internet
+no shutdown
+
+vlan 999
+name Black_Hole
+no shutdown
+exit
+
+!Opsætning af interfaces
+interface range Gi1/0/1 - 4
+switchport access Vlan 50
+switchport nonegotiate
+no shutdown
+
+interface g1/0/17
+switchport access vlan 300
+switchport nonegotiate
+shutdown
+
+interface g1/0/25
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,99,210,300
+no shutdown
+
+int g1/0/28
+switchport mode trunk
+switchport trunk native vlan 99
+no shutdown
+
 end
-copy running-config startup-config
+wr
