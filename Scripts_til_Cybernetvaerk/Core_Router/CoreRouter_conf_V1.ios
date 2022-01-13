@@ -25,8 +25,21 @@ transport input ssh
 login local
 exec-timeout 4
 
+!
+! Opsætning af statiske routes
+!
+
 ip route 0.0.0.0 0.0.0.0 10.5.0.2
+
 ip route 10.2.1.0 255.255.255.0 10.1.4.6
+ip route 10.2.1.0.255.255.255.0 10.1.4.10
+
+ip route 10.2.2.0 255.255.255.0 10.1.4.6
+ip route 10.2.2.0 255.255.255.0 10.1.4.10
+
+!
+!Interface Opsætning
+!
 
 interface gigabitethernet 0/0/0
 ip address 10.1.4.5 255.255.255.252
