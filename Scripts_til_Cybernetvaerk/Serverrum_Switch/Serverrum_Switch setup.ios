@@ -64,26 +64,38 @@ name Black_Hole
 no shutdown
 exit
 
+!TODO: OPSÆT RESTERENDE PORTE TIL BLACKHOLE
+! OG FJERN BLACKHOLE FRA TRUNKPORTE
+
 !Opsætning af interfaces
+
+interface range gi1/0/1-28
+switchport mode access
+switchport access vlan 999
+switchport nonegotiate
+shutdown
+
 interface range Gi1/0/1 - 4
 switchport access Vlan 50
-switchport nonegotiate
+spanning-tree bpduguard enable
 no shutdown
 
 interface g1/0/17
 switchport access vlan 300
-switchport nonegotiate
-shutdown
+spanning-tree bpduguard enable
+no shutdown
 
 interface g1/0/25
 switchport mode trunk
 switchport trunk native vlan 99
 switchport trunk allowed vlan 10,99,210,300
+no switchport nonegotiate
 no shutdown
 
 int g1/0/28
 switchport mode trunk
 switchport trunk native vlan 99
+no switchport nonegotiate
 no shutdown
 
 end
