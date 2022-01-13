@@ -1,4 +1,5 @@
 !TODO Tilføje descriptions til EtherChannels
+!TODO Implement trust på porte/interfaces selvom opgaven ikke bad os om det ?
 
 configure terminal
 no ip domain-lookup
@@ -28,6 +29,12 @@ line vty 0 15
 password cisco
 login
 exit
+
+ip dhcp snooping
+ip dhcp snooping vlan 10
+
+ip arp inspection vlan 10
+ip arp inspection validate src-mac dst-mac ip
 
 !vlan setup
 vlan 4
@@ -105,12 +112,16 @@ no interface po13
 interface range gi1/0/19-20
 shutdown 
 channel-group 13 mode desirable
+ip dhcp snooping trust
+ip arp inspection trust
 no shutdown
 exit
 interface po13 
 switchport mode trunk
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+ip dhcp snooping trust
+ip arp inspection trust
 no shutdown
 
 no interface po14
@@ -118,6 +129,9 @@ no interface po14
 interface range gi1/0/21-22
 shutdown 
 channel-group 14 mode desirable
+ip dhcp snooping trust
+ip arp inspection trust
+
 no shutdown
 exit
 interface po14 

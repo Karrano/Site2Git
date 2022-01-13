@@ -1,5 +1,5 @@
-!!IPV6 ADRESSER ER MISKONFIGURERET
 !TODO Tilføje descriptions til EtherChannels
+!TODO Implement trust på porte/interfaces selvom opgaven ikke bad os om det ?
 
 configure terminal
 no ip domain-lookup
@@ -11,9 +11,12 @@ Unauthorized access is strictly prohibited. #
 ip routing
 ipv6 unicast-routing
 
-! SVI CONF step 2
-ip route 0.0.0.0 0.0.0.0 10.1.4.9
+!
+!Opsætning af statiske routes
+!
 ip default-gateway 10.1.4.9
+ip route 0.0.0.0 0.0.0.0 10.1.4.9
+ip route 0.0.0.0 0.0.0.0 10.1.4.5 
 
 ! password
 line con 0
@@ -26,6 +29,12 @@ line vty 0 15
 password cisco
 login
 exit
+
+ip dhcp snooping
+ip dhcp snooping vlan 10
+
+ip arp inspection vlan 10
+ip arp inspection validate src-mac dst-mac ip
 
 !vlan setup
 vlan 5
@@ -103,6 +112,8 @@ no interface po24
 interface range gi1/0/19-20
 shutdown 
 channel-group 24 mode desirable
+ip dhcp snooping trust
+ip arp inspection trust
 no shutdown
 exit
 interface po24 
@@ -116,12 +127,16 @@ no interface po23
 interface range gi1/0/21-22
 shutdown 
 channel-group 23 mode desirable
+ip dhcp snooping trust
+ip arp inspection trust
 no shutdown
 exit
 interface po23 
 switchport mode trunk
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+ip dhcp snooping trust
+ip arp inspection trust
 no shutdown
 
 !4.3.8
