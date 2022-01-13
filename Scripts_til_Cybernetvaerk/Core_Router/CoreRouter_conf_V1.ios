@@ -93,7 +93,7 @@ address prefix 2026:10::/64
 exit
 ipv6 dhcp pool VLAN_20_CLIENTS
 domain-name cyber.ntw
-address prefix 2025:20::/64
+address prefix 2026:20::/64
 interface gi0/0/0
 ipv6 dhcp server VLAN_10_CLIENTS
 interface gi0/0/1
