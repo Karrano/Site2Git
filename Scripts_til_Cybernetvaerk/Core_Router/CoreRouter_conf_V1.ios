@@ -77,15 +77,16 @@ ip dhcp excluded-address 10.2.2.1 10.2.2.3
 ip dhcp excluded-address 10.2.2.252 10.2.2.255
 ip dhcp pool VLAN_10_CLIENTS
 network 10.2.1.0 255.255.255.0
-default-router 10.2.1.1
+default-router 10.2.1.254
 domain-name cyber.ntw
 lease 2 12 30
 exit
 ip dhcp pool VLAN_20_CLIENTS
 network 10.2.2.0 255.255.255.0
-default-router 10.2.2.2
+default-router 10.2.1.254
 domain-name cyber.ntw
 lease 2 12 30
+exit 
 
 ipv6 dhcp pool VLAN_10_CLIENTS
 domain-name cyber.ntw
@@ -98,8 +99,6 @@ interface gi0/0/0
 ipv6 dhcp server VLAN_10_CLIENTS
 interface gi0/0/1
 ipv6 dhcp server VLAN_20_CLIENTS
-
-
 
 end
 write
