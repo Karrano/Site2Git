@@ -25,8 +25,9 @@ exit
 line vty 0 15
 password cisco
 login
-
-!Opsætning af Vlans
+!
+!Opsætning af Vlans: Navn
+!
 vlan 10
 name Client_Bygn.1
 no shutdown
@@ -49,6 +50,16 @@ vlan 999
 name Black_Hole
 shutdown
 
+exit
+!
+!Global Configuration af Security
+!
+ip dhcp snooping
+ip dhcp snooping vlan 10
+ip arp inspection vlan 10
+ip arp inspection validate src-mac dst-mac ip
+no ip dhcp snooping information option
+
 ! vlan 200 gets ip
 interface vlan 200
 ip address 192.168.1.131 255.255.255.224
@@ -61,9 +72,37 @@ switchport access vlan 999
 switchport nonegotiate
 shutdown
 
-interface range gi1/0/1-2
+!
+! Gi1/0/1 Opsætning: VLAN, Security
+!
+
+!VLAN
+interface gi1/0/1
 switchport mode access
 switchport access vlan 10
+
+!Security
+switchport port-security
+switchport port-security maximum 2
+switchport port-security violation protect
+switchport port-security aging time 60
+ip dhcp snooping limit rate 10
+spanning-tree portfast
+spanning-tree bpduguard enable
+
+no shutdown
+
+!
+! Gi1/0/2 Opsætning: VLAN, Security
+!
+interface gi1/0/2
+switchport mode access
+switchport access vlan 10
+
+!Security
+ip dhcp snooping limit rate 10
+spanning-tree portfast
+spanning-tree bpduguard enable
 no shutdown
 
 !EtherChannel Group 13 conf
@@ -77,9 +116,15 @@ switchport mode trunk
 no switchport access vlan 999
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
-no shutdown
 
+!Security
+
+ip dhcp snooping trust
+ip arp inspection trust
+no shutdown
+!
 !EtherChannel Group 23 conf
+!
 interface range gi1/0/21-22
 shutdown 
 channel-group 23 mode desirable
@@ -90,6 +135,12 @@ switchport mode trunk
 no switchport access vlan 999
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+
+!Security
+
+ip dhcp snooping trust
+ip arp inspection trust
+
 no shutdown
 
 interface gi1/0/23
@@ -97,11 +148,21 @@ switchport mode access
 switchport access vlan 10
 switchport voice vlan 150
 mls qos trust cos
+
+!Security
+spanning-tree portfast
+spanning-tree bpduguard enable
+
 no shutdown
 
 interface gi1/0/24
 switchport mode access
 switchport access vlan 250
+
+!Security
+spanning-tree portfast
+spanning-tree bpduguard enable
+
 no shutdown
 exit
 
