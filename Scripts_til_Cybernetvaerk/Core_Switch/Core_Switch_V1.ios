@@ -54,6 +54,7 @@ shutdown
 int g1/0/1
 switchport mode access
 switchport access vlan 210
+spanning-tree bpduguard enable
 no shutdown
 int g1/0/2
 switchport mode trunk
@@ -70,5 +71,6 @@ no shutdown
 int g1/0/4
 switchport mode access
 switchport access vlan 300
+spanning-tree bpduguard enable
 end
 write
