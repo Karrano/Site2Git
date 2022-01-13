@@ -7,12 +7,10 @@ enable secret class
 banner motd #
 Unauthorized access is strictly prohibited. #
 ip default-gateway 192.168.1.129
-security password min-length 12
 username Manager secret 55Hadm!n2020
 username Brucewayne privilege 15 secret op10muserPrime!
 crypto key generate rsa general-keys modulus 1024
 enable secret $cisco!PRIV*
-password $cisco!!CON*
 
 line vty 0 4
 password $cisco!!VTY*
@@ -21,8 +19,7 @@ transport input ssh
 login local
 exec-timeout 4
 login block-for 120 attempts 3 within 60
-exit
-ssh version 2
+!hopper ud til conf t^^
 
 !SVI CONF step 1 [1.1.6]
 interface vlan 210
