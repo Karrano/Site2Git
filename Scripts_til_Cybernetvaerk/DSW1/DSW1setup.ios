@@ -1,4 +1,3 @@
-!!IPV6 ADRESSER ER MISKONFIGURERET
 !TODO Tilføje descriptions til EtherChannels
 
 configure terminal
@@ -11,9 +10,12 @@ Unauthorized access is strictly prohibited. #
 ip routing
 ipv6 unicast-routing
 
-! SVI CONF step 2
-ip route 0.0.0.0 0.0.0.0 10.1.4.5
+!
+!Opsætning af statiske routes
+!
 ip default-gateway 10.1.4.5
+ip route 0.0.0.0 0.0.0.0 10.1.4.9
+ip route 0.0.0.0 0.0.0.0 10.1.4.5 
 
 ! password
 line con 0
