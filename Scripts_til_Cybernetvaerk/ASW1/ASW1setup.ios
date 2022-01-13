@@ -25,6 +25,7 @@ exit
 line vty 0 15
 password cisco
 login
+
 !
 !Opsætning af Vlans: Navn
 !
@@ -105,6 +106,7 @@ spanning-tree portfast
 spanning-tree bpduguard enable
 no shutdown
 
+no interface po13
 !EtherChannel Group 13 conf
 interface range gi1/0/19-20
 shutdown 
@@ -116,12 +118,14 @@ switchport mode trunk
 no switchport access vlan 999
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+no shutdown
 
 !Security
-
 ip dhcp snooping trust
 ip arp inspection trust
 no shutdown
+
+no interface po23
 !
 !EtherChannel Group 23 conf
 !
@@ -135,9 +139,9 @@ switchport mode trunk
 no switchport access vlan 999
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+switchport access vlan 99
 
 !Security
-
 ip dhcp snooping trust
 ip arp inspection trust
 

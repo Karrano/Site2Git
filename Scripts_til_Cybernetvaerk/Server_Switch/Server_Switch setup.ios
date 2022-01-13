@@ -1,3 +1,4 @@
+!basic switch configuration
 configure terminal
 no ip domain-lookup
 hostname Server_Switch
@@ -13,14 +14,16 @@ username Brucewayne privilege 15 secret op10muserPrime!
 crypto key generate rsa general-keys modulus 1024
 enable secret $cisco!PRIV*
 password $cisco!!CON*
-line vty 0 4
 password $cisco!!VTY*
 login
-transport input ssh
-login local
 exec-timeout 4
 login block-for 120 attempts 3 within 60
 Sdm prefer lanbase-routing
+
+!enable ssh
+line vty 0 4
+transport input ssh
+login local 
 
 !SVI CONF step 1 [1.1.6]
 interface vlan 210

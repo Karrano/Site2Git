@@ -1,3 +1,6 @@
 configure terminal
 sdm prefer lanbase-routing
+exit
 !clock set [hh:mm:ss][month][day][year]
+wr
+reload
