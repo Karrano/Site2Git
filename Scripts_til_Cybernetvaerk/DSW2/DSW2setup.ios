@@ -40,10 +40,6 @@ ip route 10.2.3.0 255.255.255.128 10.2.4.13 80
 ip route 10.2.3.128 255.255.255.128 10.1.4.9
 !ALT route til VLAN250 til DSW1
 ip route 10.2.3.128 255.255.255.128 10.2.4.13 80
-!VLAN50 til Router
-ip route 10.3.0.0 255.255.255.224 10.1.4.9
-!ALT route til VLAN50 til DSW1
-ip route 10.3.0.0 255.255.255.224 10.2.4.13 80
 !VLAN200 til Router
 ip route 192.168.1.128 255.255.255.128 10.1.4.9
 !ALT route til VLAN200 til DSW1
