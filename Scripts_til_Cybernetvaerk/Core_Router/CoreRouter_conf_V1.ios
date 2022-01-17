@@ -32,10 +32,13 @@ exec-timeout 4
 ip route 0.0.0.0 0.0.0.0 10.5.0.2
 
 ip route 10.2.1.0 255.255.255.0 10.1.4.6
-ip route 10.2.1.0.255.255.255.0 10.1.4.10
-
-ip route 10.2.2.0 255.255.255.0 10.1.4.6
 ip route 10.2.2.0 255.255.255.0 10.1.4.10
+
+
+!DSW1 G1/0/1 til VLAN10
+ip route 10.2.1.0 255.255.255.0 10.1.4.6
+!DSW2 G1/0/1 til VLAN10
+ip route 10.2.1.0 255.255.255.0 10.1.4.10 80
 
 !
 !Interface Opsætning
@@ -96,7 +99,7 @@ lease 2 12 30
 exit
 ip dhcp pool VLAN_20_CLIENTS
 network 10.2.2.0 255.255.255.0
-default-router 10.2.1.254
+default-router 10.2.2.254
 domain-name cyber.ntw
 lease 2 12 30
 exit 

@@ -14,9 +14,15 @@ ipv6 unicast-routing
 !
 !Opsætning af statiske routes
 !
+!Default Routes
 ip default-gateway 10.1.4.5
-ip route 0.0.0.0 0.0.0.0 10.1.4.9
-ip route 0.0.0.0 0.0.0.0 10.1.4.5 
+!9.2.b
+ip route 0.0.0.0 0.0.0.0 10.1.4.5
+!Core Router Loopback 9.1.b
+ip route 10.1.21.128 255.255.255.224 10.1.4.5
+!Floating static default route til DSW2 G1/0/23
+ip route 0.0.0.0 0.0.0.0 10.2.4.14 80
+
 
 ! password
 line con 0
@@ -83,7 +89,7 @@ ip helper-address 10.1.21.129
 ipv6 dhcp relay destination FEC0::21:1 
 ipv6 address 2026:20::1/64
 standby version 2
-standby 20 ip 10.2.1.254
+standby 20 ip 10.2.2.254
 standby 20 preempt
 
 no shutdown
