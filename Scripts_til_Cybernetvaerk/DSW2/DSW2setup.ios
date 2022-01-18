@@ -18,10 +18,33 @@ ipv6 unicast-routing
 ip default-gateway 10.1.4.9
 !Default route til Core Router G0/0/0
 ip route 0.0.0.0 0.0.0.0 10.1.4.9
-!Core Router Loopback
-ip route 10.1.21.128 255.255.255.224 10.1.4.5
 !Floating static default route til DSW1 G1/0/23
 ip route 0.0.0.0 0.0.0.0 10.2.4.13 80
+!Core Router Loopback
+ip route 10.1.21.128 255.255.255.224 10.1.4.9
+!ALT route for loopback
+ip route 10.1.21.128 255.255.255.224 10.2.4.13 80
+!VLAN10 til Router
+ip route 10.2.1.0 255.255.255.0 10.1.4.9
+!ALT route til VLAN10 til DSW1
+ip route 10.2.1.0 255.255.255.0 10.2.4.13 80
+!VLAN20 til Router
+ip route 10.2.2.0 255.255.255.0 10.1.4.9
+!ALT route til VLAN20 til DSW1
+ip route 10.2.2.0 255.255.255.0 10.2.4.13 80
+!VLAN150 til Router
+ip route 10.2.3.0 255.255.255.128 10.1.4.9
+!ALT route til VLAN150 til DSW1
+ip route 10.2.3.0 255.255.255.128 10.2.4.13 80
+!VLAN250 til Router
+ip route 10.2.3.128 255.255.255.128 10.1.4.9
+!ALT route til VLAN250 til DSW1
+ip route 10.2.3.128 255.255.255.128 10.2.4.13 80
+!VLAN200 til Router
+ip route 192.168.1.128 255.255.255.128 10.1.4.9
+!ALT route til VLAN200 til DSW1
+ip route 192.168.1.128 255.255.255.128 10.2.4.13 80
+
 
 
 

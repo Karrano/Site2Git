@@ -17,12 +17,30 @@ ipv6 unicast-routing
 !Default Routes
 ip default-gateway 10.1.4.5
 !9.2.b
+!Floating static default route til DSW2 G1/0/23
 ip route 0.0.0.0 0.0.0.0 10.1.4.5
+ip route 0.0.0.0 0.0.0.0 10.2.4.14 80
 !Core Router Loopback 9.1.b
 ip route 10.1.21.128 255.255.255.224 10.1.4.5
-!Floating static default route til DSW2 G1/0/23
-ip route 0.0.0.0 0.0.0.0 10.2.4.14 80
-
+ip route 10.1.21.128 255.255.255.224 10.1.4.14 80
+! Vlan10
+ip route 10.2.1.0 255.255.255.0 10.1.4.5
+ip route 10.2.1.0 255.255.255.0 10.2.4.14 80
+! Vlan20
+ip route 10.2.2.0 255.255.255.0 10.1.4.5
+ip route 10.2.2.0 255.255.255.0 10.2.4.14 80
+! Vlan99
+! ip route huh?!
+! ip route huh?!
+! Vlan150
+ip route 10.2.3.0 255.255.255.128 10.1.4.5
+ip route 10.2.3.0 255.255.255.128 10.2.4.14 80
+! Vlan200
+ip route 192.168.1.128 255.255.255.224 10.1.4.5
+ip route 192.168.1.128 255.255.255.224 10.2.4.14 80
+! Vlan250
+ip route 10.2.3.128 255.255.255.128 10.1.4.5
+ip route 10.2.3.128 255.255.255.128 10.2.4.14 80
 
 ! password
 line con 0
