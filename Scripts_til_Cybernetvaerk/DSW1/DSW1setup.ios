@@ -16,11 +16,10 @@ ipv6 unicast-routing
 !
 !Default Routes
 ip default-gateway 10.1.4.5
-!9.2.b
 !Floating static default route til DSW2 G1/0/23
 ip route 0.0.0.0 0.0.0.0 10.1.4.5
 ip route 0.0.0.0 0.0.0.0 10.2.4.14 80
-!Core Router Loopback 9.1.b
+!Core Router Loopback
 ip route 10.1.21.128 255.255.255.224 10.1.4.5
 ip route 10.1.21.128 255.255.255.224 10.1.4.14 80
 ! Vlan10
@@ -29,9 +28,6 @@ ip route 10.2.1.0 255.255.255.0 10.2.4.14 80
 ! Vlan20
 ip route 10.2.2.0 255.255.255.0 10.1.4.5
 ip route 10.2.2.0 255.255.255.0 10.2.4.14 80
-! Vlan99
-! ip route huh?!
-! ip route huh?!
 ! Vlan150
 ip route 10.2.3.0 255.255.255.128 10.1.4.5
 ip route 10.2.3.0 255.255.255.128 10.2.4.14 80
@@ -108,8 +104,8 @@ ipv6 dhcp relay destination FEC0::21:1
 ipv6 address 2026:20::1/64
 standby version 2
 standby 20 ip 10.2.2.254
+!DSW2 har fået priority på Vlan20
 standby 20 preempt
-
 no shutdown
 
 interface vlan 150
@@ -155,13 +151,14 @@ shutdown
 channel-group 14 mode desirable
 ip dhcp snooping trust
 ip arp inspection trust
-
 no shutdown
 exit
 interface po14 
 switchport mode trunk
 switchport trunk native vlan 99
 switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+!DHCP snooping/ARP inspection trust not used
+!Because not connected to other internal switch
 no shutdown
 
 !4.3.8
