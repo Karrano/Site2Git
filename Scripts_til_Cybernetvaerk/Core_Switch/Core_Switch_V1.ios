@@ -13,7 +13,7 @@ ip default-gateway 192.168.2.129
 
 ! password
 line con 0
-password cisco
+password class
 login
 logging synchronous
 exit
@@ -23,8 +23,8 @@ line vty 0 15
 password cisco
 login
 
+exit
 #Opsætning af vlan
-configure terminal
 vlan 50
 name Server
 no shutdown
@@ -47,7 +47,7 @@ exit
 
 !Opsætning af interfaces
 conf t
-int range g1/01/1-28
+int range g1/0/1-28
 switchport acces vlan 999
 switchport nonegotiate
 shutdown

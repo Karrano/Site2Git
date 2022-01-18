@@ -13,6 +13,8 @@ ipv6 unicast-routing
 ! SVI CONF step 2
 ip default-gateway 192.168.1.129
 
+ip route 0.0.0.0 0.0.0.0 192.168.1.129
+
 ! password
 line con 0
 password cisco
