@@ -59,19 +59,21 @@ description Forbindelse fra CoreRouter til DSW2
 no shutdown
 
 interface gigabitethernet 0/0/2.50
+encapsulation dot1Q 50
 ip address 10.3.0.1 255.255.255.224
 ipv6 address 2026:50::1/64
 ipv6 address fe80::1 link-local
 description Default Gateway for VLAN 50
 
 interface gigabitethernet 0/0/2.300
+encapsulation dot1Q 300
 ip address 10.5.0.1 255.255.255.252
 ipv6 address 2026:1::2/64
 ipv6 address fe80::1 link-local
 description Default Gateway for (VLAN300)
 
 interface gigabitethernet 0/0/2.210
-encapsulation dot1Q 21
+encapsulation dot1Q 210
 ip address 192.168.2.129 255.255.255.224
 description Default Gateway for  Management_Network(VLAN99)
 
