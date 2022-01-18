@@ -30,16 +30,23 @@ exec-timeout 4
 !
 ! Default til internettet (BorderRouter)
 ip route 0.0.0.0 0.0.0.0 10.5.0.2
+ipv6 route ::/0 2026:1:1::1
+
 ! Vlan300 til internettet
 ip route 10.5.0.0 255.255.255.252 10.11.0.1
+
 
 ! Vlan10
 ip route 10.2.1.0 255.255.255.0 10.1.4.6
 ip route 10.2.1.0 255.255.255.0 10.1.4.10 80
+ipv6 route 2026:10::0/64 2026:2::2
+ipv6 route 2026:10::0/64 2026:4::2 80
 
 ! Vlan20
 ip route 10.2.2.0 255.255.255.0 10.1.4.10
 ip route 10.2.2.0 255.255.255.0 10.1.4.6 80
+ipv6 route 2026:10::0/64 2026:4::2
+ipv6 route 2026:10::0/64 2026:2::2 80
 
 ! Vlan150 til DSW2
 ip route 10.2.3.0 255.255.255.128 10.1.4.10
@@ -52,6 +59,7 @@ ip route 192.168.1.128 255.255.255.224 10.1.4.10 80
 ! Vlan250 til DSW1
 ip route 10.2.3.128 255.255.255.128 10.1.4.6
 ip route 10.2.3.128 255.255.255.128 10.1.4.10 80
+
 
 !
 !Interface Opsætning
