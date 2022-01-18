@@ -20,12 +20,14 @@ login block-for 120 attempts 3 within 60
 !
 ! Opsætning af statiske routes
 !
-!Default route til Core Router G0/0/0
+!Default route til Core Router G0/0/0 af INTERNET TRAFIK/VLAN 300
 ip route 0.0.0.0 0.0.0.0 10.5.0.1
+ipv6 route ::/0 2026:1:1::2
 !Default Route Vlan 50
-ip route 10.3.0.0 255.255.255.224
+ip route 10.3.0.0 255.255.255.224 10.0.3.1
+ipv6 route 2026:50::/64 2026:50::1
 !Default Route Vlan 210
-ip route 192.168.2.128 255.255.255.224
+ip route 192.168.2.128 255.255.255.224 192.168.2.129
 
 line vty 0 4
 password $cisco!!VTY*
