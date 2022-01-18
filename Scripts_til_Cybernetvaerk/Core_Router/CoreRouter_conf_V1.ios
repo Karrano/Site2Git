@@ -28,22 +28,34 @@ exec-timeout 4
 !
 ! Opsætning af statiske routes
 !
-
+! Default til internettet (BorderRouter)
 ip route 0.0.0.0 0.0.0.0 10.5.0.2
+! Vlan300 til internettet
+ip route 10.5.0.0 255.255.255.252 10.11.0.1
 
+! Vlan10
 ip route 10.2.1.0 255.255.255.0 10.1.4.6
-ip route 10.2.2.0 255.255.255.0 10.1.4.10
-
-
-!DSW1 G1/0/1 til VLAN10
-ip route 10.2.1.0 255.255.255.0 10.1.4.6
-!DSW2 G1/0/1 til VLAN10
 ip route 10.2.1.0 255.255.255.0 10.1.4.10 80
+
+! Vlan20
+ip route 10.2.2.0 255.255.255.0 10.1.4.10
+ip route 10.2.2.0 255.255.255.0 10.1.4.6 80
+
+! Vlan150 til DSW2
+ip route 10.2.3.0 255.255.255.128 10.1.4.10
+ip route 10.2.3.0 255.255.255.128 10.1.4.6 80
+
+! Vlan200 til DSW1
+ip route 192.168.1.128 255.255.255.224 10.1.4.6
+ip route 192.168.1.128 255.255.255.224 10.1.4.10 80
+
+! Vlan250 til DSW1
+ip route 10.2.3.128 255.255.255.128 10.1.4.6
+ip route 10.2.3.128 255.255.255.128 10.1.4.10 80
 
 !
 !Interface Opsætning
 !
-
 interface gigabitethernet 0/0/0
 ip address 10.1.4.5 255.255.255.252
 ipv6 address 2026:2::1/64

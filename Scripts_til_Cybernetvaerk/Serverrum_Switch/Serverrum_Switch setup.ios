@@ -3,7 +3,6 @@ no ip domain-lookup
 hostname ServerRum_Switch
 ip domain-name cyber.ntw
 service password-encryption
-enable secret class
 banner motd #
 Unauthorized access is strictly prohibited. #
 ip default-gateway 192.168.1.129
@@ -19,13 +18,6 @@ transport input ssh
 login local
 exec-timeout 4
 login block-for 120 attempts 3 within 60
-!hopper ud til conf t^^
-
-!SVI CONF step 1 [1.1.6]
-interface vlan 210
-ip address 192.168.2.132 255.255.255.224
-no shutdown
-exit
 
 !password
 line con 0
@@ -50,10 +42,11 @@ no shutdown
 
 vlan 210
 name Management_Netw_Server
-
-vlan 220
-name Printer
 no shutdown
+interface vlan 210
+ip address 192.168.2.132 255.255.255.224
+no shutdown
+exit
 
 vlan 300
 name Internet
@@ -61,12 +54,8 @@ no shutdown
 
 vlan 999
 name Black_Hole
-no shutdown
+shutdown
 exit
-
-!TODO: OPSÆT RESTERENDE PORTE TIL BLACKHOLE
-! OG FJERN BLACKHOLE FRA TRUNKPORTE
-
 !Opsætning af interfaces
 
 interface range gi1/0/1-28
@@ -88,14 +77,14 @@ no shutdown
 interface g1/0/25
 switchport mode trunk
 switchport trunk native vlan 99
-switchport trunk allowed vlan 10,99,210,300
-no switchport nonegotiate
+switchport trunk allowed vlan 1,50,99,210,300
+no switchport access vlan 999
 no shutdown
 
-int g1/0/28
+interface g1/0/28
 switchport mode trunk
 switchport trunk native vlan 99
-no switchport nonegotiate
+no switchport access vlan 999
 no shutdown
 
 end
