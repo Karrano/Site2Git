@@ -17,7 +17,15 @@ username Manager secret 55Hadm!n2020
 username Brucewayne privilege 15 secret op10muserPrime!
 crypto key generate rsa general-keys modulus 1024
 login block-for 120 attempts 3 within 60
+!
+! Opsætning af statiske routes
+!
+!Default route til Core Router G0/0/0
 ip route 0.0.0.0 0.0.0.0 10.5.0.1
+!Default Route Vlan 50
+ip route 10.3.0.0 255.255.255.224
+!Default Route Vlan 210
+ip route 192.168.2.128 255.255.255.224
 
 line vty 0 4
 password $cisco!!VTY*
