@@ -1,0 +1,344 @@
+!TODO Tilføje descriptions til EtherChannels
+!TODO Implement trust på porte/interfaces selvom opgaven ikke bad os om det ?
+
+configure terminal
+no ip domain-lookup
+hostname DSW2
+service password-encryption
+enable secret Attractor9:Freeway
+banner motd #
+Unauthorized access is strictly prohibited. #
+ip routing
+ipv6 unicast-routing
+
+!
+!Opsætning af statiske routes
+!
+!Default Routes
+ip default-gateway 10.1.4.9
+ipv6 default-gateway 2026:4::1
+!Default route til Core Router G0/0/0 - ALT til DSW1
+ip route 0.0.0.0 0.0.0.0 10.1.4.9
+ipv6 route ::/0 2026:4::1
+ip route 0.0.0.0 0.0.0.0 10.2.4.13 80
+ipv6 route ::/0 2026:2::2 80
+!Core Router Loopback
+ip route 10.1.21.128 255.255.255.224 10.1.4.9
+ip route 10.1.21.128 255.255.255.224 10.2.4.13 80
+! Vlan10
+ip route 10.2.1.0 255.255.255.0 10.1.4.9
+ip route 10.2.1.0 255.255.255.0 10.2.4.13 80
+ipv6 route 2026:10::0/64 2026:4::1
+ipv6 route 2026:10::0/64 2026:2::2 80
+! Vlan20
+ip route 10.2.2.0 255.255.255.0 10.1.4.9
+ip route 10.2.2.0 255.255.255.0 10.2.4.13 80
+ipv6 route 2026:20::0/64 2026:4::1
+ipv6 route 2026:20::0/64 2026:2::2 80
+! Vlan150
+ip route 10.2.3.0 255.255.255.128 10.1.4.9
+ip route 10.2.3.0 255.255.255.128 10.2.4.13 80
+! Vlan200
+ip route 192.168.1.128 255.255.255.128 10.1.4.9
+ip route 192.168.1.128 255.255.255.128 10.2.4.13 80
+! Vlan250
+ip route 10.2.3.128 255.255.255.128 10.1.4.9
+ip route 10.2.3.128 255.255.255.128 10.2.4.13 80
+
+ipv6 route ::/0 2026:4::1
+ipv6 route 2026:1::/64 2026:4::1
+ipv6 route 2026:21::/64 2026:4::1
+ipv6 route 2026:50::/64 2026:4::1
+
+! password
+line con 0
+password Drearily4:Jingling
+login
+logging synchronous
+
+! vty for telnet
+line vty 0 15
+password Disabled:Greeting3
+login
+exit
+
+ip dhcp snooping
+ip dhcp snooping vlan 10
+
+ip arp inspection vlan 10
+ip arp inspection validate src-mac dst-mac ip
+
+!vlan setup
+vlan 5
+name DSW2-Core
+vlan 10
+name Client_Bygn.1
+vlan 20
+name Client_bygn.2
+vlan 99
+name Native
+vlan 150
+name Voice
+vlan 200
+name Management_Netw
+vlan 250
+name Printer
+vlan 999
+name Black_Hole
+
+! vlan assigned ipv4 n ipv6
+!4.3.8
+interface vlan 1
+ip address 10.2.4.14 255.255.255.252
+ipv6 address 2026:3::1/64
+no shutdown
+
+interface vlan 5
+ip address 10.1.4.10 255.255.255.252
+ipv6 address 2026:4::2/64
+no shutdown
+
+interface vlan 10
+ip address 10.2.1.2 255.255.255.0
+ip helper-address 10.1.21.129
+ipv6 dhcp relay destination FEC0::21:1 
+ipv6 address 2026:10::2/64
+standby version 2
+standby 10 ip 10.2.1.254
+!DSW1 har fået priority på Vlan10
+standby 10 preempt
+no shutdown
+
+interface vlan 20
+ip address 10.2.2.2 255.255.255.0
+ip helper-address 10.1.21.129
+ipv6 dhcp relay destination FEC0::21:1 
+ipv6 address 2026:20::2/64
+standby version 2
+standby 20 ip 10.2.2.254
+standby 20 priority 150
+standby 20 preempt
+no shutdown
+
+interface vlan 150
+ip address 10.2.3.2 255.255.255.128
+no shutdown
+
+interface vlan 200
+ip address 192.168.1.130 255.255.255.224
+no shutdown
+
+interface vlan 250
+ip address 10.2.3.130 255.255.255.128
+no shutdown
+
+!gigabitethernet int configs
+interface range gi1/0/1-28
+switchport mode access
+switchport access vlan 999
+switchport nonegotiate
+shutdown
+
+no interface po24
+!EtherChannel Group 24 conf
+interface range gi1/0/19-20
+shutdown 
+channel-group 24 mode desirable
+ip dhcp snooping trust
+ip arp inspection trust
+no shutdown
+exit
+interface po24 
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+!DHCP snooping/ARP inspection trust not used
+!Because not connected to other internal switch
+no shutdown
+
+no interface po23
+!EtherChannel Group 23 conf
+interface range gi1/0/21-22
+shutdown 
+channel-group 23 mode desirable
+ip dhcp snooping trust
+ip arp inspection trust
+no shutdown
+exit
+interface po23 
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+ip dhcp snooping trust
+ip arp inspection trust
+no shutdown
+
+!4.3.8
+interface gi1/0/1
+switchport mode access
+switchport access vlan 5
+no shutdown
+
+interface gi1/0/23
+switchport mode access
+switchport access vlan 1
+no shutdown
+
+interface loopback 2
+ip address 22.22.22.22 255.255.255.255
+ipv6 address FEC0:22::2/64
+no shutdown
+
+exit
+
+spanning-tree vlan 1,10,20,99,150,200,250 priority 16384
+
+end
+wr
+
+
+! password
+line con 0
+password cisco
+login
+logging synchronous
+
+! vty for telnet
+line vty 0 15
+password cisco
+login
+exit
+
+ip dhcp snooping
+ip dhcp snooping vlan 10
+
+ip arp inspection vlan 10
+ip arp inspection validate src-mac dst-mac ip
+
+!vlan setup
+vlan 5
+name DSW2-Core
+vlan 10
+name Client_Bygn.1
+vlan 20
+name Client_bygn.2
+vlan 99
+name Native
+vlan 150
+name Voice
+vlan 200
+name Management_Netw
+vlan 250
+name Printer
+vlan 999
+name Black_Hole
+
+! vlan assigned ipv4 n ipv6
+!4.3.8
+interface vlan 1
+ip address 10.2.4.14 255.255.255.252
+ipv6 address 2026:3::1/64
+no shutdown
+
+interface vlan 5
+ip address 10.1.4.10 255.255.255.252
+ipv6 address 2026:4::2/64
+no shutdown
+
+interface vlan 10
+ip address 10.2.1.2 255.255.255.0
+ip helper-address 10.1.21.129
+ipv6 dhcp relay destination FEC0::21:1 
+ipv6 address 2026:10::2/64
+standby version 2
+standby 10 ip 10.2.1.254
+!DSW1 har fået priority på Vlan10
+standby 10 preempt
+no shutdown
+
+interface vlan 20
+ip address 10.2.2.2 255.255.255.0
+ip helper-address 10.1.21.129
+ipv6 dhcp relay destination FEC0::21:1 
+ipv6 address 2026:20::2/64
+standby version 2
+standby 20 ip 10.2.2.254
+standby 20 priority 150
+standby 20 preempt
+no shutdown
+
+interface vlan 150
+ip address 10.2.3.2 255.255.255.128
+no shutdown
+
+interface vlan 200
+ip address 192.168.1.130 255.255.255.224
+no shutdown
+
+interface vlan 250
+ip address 10.2.3.130 255.255.255.128
+no shutdown
+
+!gigabitethernet int configs
+interface range gi1/0/1-28
+switchport mode access
+switchport access vlan 999
+switchport nonegotiate
+shutdown
+
+no interface po24
+!EtherChannel Group 24 conf
+interface range gi1/0/19-20
+shutdown 
+channel-group 24 mode desirable
+ip dhcp snooping trust
+ip arp inspection trust
+no shutdown
+exit
+interface po24 
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+!DHCP snooping/ARP inspection trust not used
+!Because not connected to other internal switch
+no shutdown
+
+no interface po23
+!EtherChannel Group 23 conf
+interface range gi1/0/21-22
+shutdown 
+channel-group 23 mode desirable
+ip dhcp snooping trust
+ip arp inspection trust
+no shutdown
+exit
+interface po23 
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 1,10,20,50,99,150,200,250,300
+ip dhcp snooping trust
+ip arp inspection trust
+no shutdown
+
+!4.3.8
+interface gi1/0/1
+switchport mode access
+switchport access vlan 5
+no shutdown
+
+interface gi1/0/23
+switchport mode access
+switchport access vlan 1
+no shutdown
+
+interface loopback 2
+ip address 22.22.22.22 255.255.255.255
+ipv6 address FEC0:22::2/64
+no shutdown
+
+exit
+
+spanning-tree vlan 1,10,20,99,150,200,250 priority 16384
+
+end
+wr
