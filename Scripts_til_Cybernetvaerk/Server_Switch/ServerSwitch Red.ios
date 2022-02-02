@@ -1,0 +1,76 @@
+!basic switch configuration
+configure terminal
+no ip domain-lookup
+hostname Server_Switch
+ip domain-name cyber.ntw
+service password-encryption
+enable secret NKQ9KVKQhG^#^^^7nt!C7ow72nSQ2vi*
+banner motd #
+Unauthorized access is strictly prohibited. #
+ip default-gateway 192.168.1.129
+username Manager secret 55Hadm!n2020
+username Brucewayne privilege 15 secret op10muserPrime!
+crypto key generate rsa general-keys modulus 1024
+login block-for 120 attempts 3 within 60
+
+!enable ssh
+line vty 0 4
+password %33MMPNbD3jFe*$7zRmf@D$E^xbX5t#u
+transport input ssh
+login local 
+
+!password
+line con 0
+password V6y*&&mtL6T%kPeP6EaEkih#4rCXs3C!
+login
+logging synchronous
+
+!Opsætning af vlan
+vlan 50
+no shutdown
+name Server
+vlan 99
+name Native
+no shutdown
+vlan 210
+name Management_Netw_Server
+no shutdown
+interface vlan 210
+ip add 192.168.2.131 255.255.255.224
+no shutdown
+vlan 300
+name Internet
+no shutdown
+vlan 999
+name Black_Hole
+shutdown
+exit
+
+!Opsætning af interfaces
+interface range g1/0/1-22
+switchport access vlan 999
+switchport nonegotiate
+shutdown
+
+interface g1/0/3
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 1,50,99,210,300
+no switchport access vlan 999
+no shutdown
+
+! Trunk
+interface g1/0/7
+switchport mode access
+switchport access vlan 300
+no shutdown
+
+interface g1/0/25
+switchport mode trunk
+switchport trunk allowed vlan 1,50,99,210,300
+switchport trunk native vlan 99
+no switchport access vlan 999
+no shutdown
+
+end
+wr

@@ -1,0 +1,76 @@
+configure terminal
+no ip domain-lookup
+hostname Core_Switch
+service password-encryption
+enable secret Q9U#s9kq@EM#SuKA7Za6ypZT2pMG2ZP@
+banner motd #
+Unauthorized access is strictly prohibited. #
+ip routing
+ipv6 unicast-routing
+
+ip default-gateway 192.168.2.129
+
+
+! password
+line con 0
+password 5XK#LUCawzkv4ZJ%Mz@#346ENbGfFaSz
+login
+logging synchronous
+exit
+
+! vty for telnet
+line vty 0 15
+password f&dtFrcRL&2b6u^gZX95m@tSEHg$N63T
+login
+
+exit
+#Opsætning af vlan
+vlan 50
+name Server
+no shutdown
+vlan 99
+name Native
+no shutdown
+vlan 210
+name Management_Netw_Server
+no shutdown
+int vlan210
+ip add 192.168.2.130 255.255.255.224
+no shutdown
+vlan 300
+name Internet
+no shutdown
+vlan 999
+name Black_Hole
+no shutdown
+exit
+
+!Opsætning af interfaces
+conf t
+int range g1/0/1-28
+switchport acces vlan 999
+switchport nonegotiate
+shutdown
+int g1/0/1
+switchport mode access
+switchport access vlan 210
+spanning-tree bpduguard enable
+no shutdown
+int g1/0/2
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 1,50,99,210,300
+no switchport access vlan 999
+no shutdown
+int g1/0/3
+switchport mode trunk
+switchport trunk native Vlan 99
+switchport trunk allowed vlan 1,5,99,210
+no switchport access vlan 999
+no shutdown
+int g1/0/4
+switchport mode access
+switchport access vlan 300
+spanning-tree bpduguard enable
+end
+write
