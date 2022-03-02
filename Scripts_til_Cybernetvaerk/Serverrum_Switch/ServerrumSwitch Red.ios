@@ -1,0 +1,91 @@
+configure terminal
+no ip domain-lookup
+hostname ServerRum_Switch
+ip domain-name cyber.ntw
+service password-encryption
+banner motd #
+Unauthorized access is strictly prohibited. #
+ip default-gateway 192.168.1.129
+username Manager secret 55Hadm!n2020
+username Brucewayne privilege 15 secret op10muserPrime!
+crypto key generate rsa general-keys modulus 1024
+enable secret K85Ze#5mFHiVQ4WF&by3QtbN8KL%ZA^D
+
+line vty 0 4
+password TXL4Ho7G5gp9fzcao@*3@hd*4a&zMN2^
+login
+transport input ssh
+login local
+exec-timeout 4
+login block-for 120 attempts 3 within 60
+
+!password
+line con 0
+password fJDf%MWcqnYji8u!sg6KgofT$oB6@H!#
+login
+logging synchronous
+
+!vty for telnet
+line vty 0 15
+password TXL4Ho7G5gp9fzcao@*3@hd*4a&zMN2^
+login
+exit
+
+!Opsætning af vlan
+vlan 50
+no shutdown
+name Server
+
+vlan 99
+name Native
+no shutdown
+
+vlan 210
+name Management_Netw_Server
+no shutdown
+interface vlan 210
+ip address 192.168.2.132 255.255.255.224
+no shutdown
+exit
+
+vlan 300
+name Internet
+no shutdown
+
+vlan 999
+name Black_Hole
+shutdown
+exit
+!Opsætning af interfaces
+
+interface range gi1/0/1-28
+switchport mode access
+switchport access vlan 999
+switchport nonegotiate
+shutdown
+
+interface range Gi1/0/1 - 4
+switchport access Vlan 50
+spanning-tree bpduguard enable
+no shutdown
+
+interface g1/0/17
+switchport access vlan 300
+spanning-tree bpduguard enable
+no shutdown
+
+interface g1/0/25
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 1,50,99,210,300
+no switchport access vlan 999
+no shutdown
+
+interface g1/0/28
+switchport mode trunk
+switchport trunk native vlan 99
+no switchport access vlan 999
+no shutdown
+
+end
+wr
