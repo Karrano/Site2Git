@@ -85,10 +85,10 @@ switchport mode access
 switchport access vlan 10
 
 !Security
-switchport port-security
-switchport port-security maximum 2
-switchport port-security violation protect
-switchport port-security aging time 60
+!switchport port-security
+!switchport port-security maximum 2
+!switchport port-security violation protect
+!switchport port-security aging time 60
 ip dhcp snooping limit rate 10
 spanning-tree portfast
 spanning-tree bpduguard enable

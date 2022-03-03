@@ -10,18 +10,27 @@ ipv6 unicast-routing
 
 ip default-gateway 192.168.2.129
 
+username Manager secret 55Hadm!n2020
+username Brucewayne privilege 15 secret op10muserPrime!
+!
+enable secret $cisco!PRIV*
+!
+login block-for 120 attempts 3 witin 60
+
 
 ! password
 line con 0
-password class
-login
+password $cisco!!CON*
+exec-timeout 4 0
 logging synchronous
-exit
-
-! vty for telnet
-line vty 0 15
-password cisco
 login
+
+!VTY for SSH 
+line vty 0 15
+password $cisco!!VTY*
+excec-timeout 4 0
+transport input ssh
+login local
 
 exit
 #Opsætning af vlan
@@ -42,15 +51,17 @@ name Internet
 no shutdown
 vlan 999
 name Black_Hole
-no shutdown
+shutdown
 exit
 
 !Opsætning af interfaces
 conf t
 int range g1/0/1-28
+switchport mode access
 switchport acces vlan 999
 switchport nonegotiate
 shutdown
+
 int g1/0/1
 switchport mode access
 switchport access vlan 210
@@ -65,12 +76,18 @@ no shutdown
 int g1/0/3
 switchport mode trunk
 switchport trunk native Vlan 99
-switchport trunk allowed vlan 1,5,99,210
+switchport trunk allowed vlan 1,50,99,210,300
 no switchport access vlan 999
 no shutdown
 int g1/0/4
 switchport mode access
 switchport access vlan 300
 spanning-tree bpduguard enable
+no shutdown
+
+interface Vlan210
+ ip address 192.168.2.130 255.255.255.224
+ no shutdown
+
 end
 write

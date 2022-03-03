@@ -1,13 +1,11 @@
-!basic switch configuration
 configure terminal
 no ip domain-lookup
 hostname Server_Switch
 ip domain-name cyber.ntw
 service password-encryption
-enable secret class
 banner motd #
 Unauthorized access is strictly prohibited. #
-ip default-gateway 192.168.1.129
+ip default-gateway 192.168.2.129
 username Manager secret 55Hadm!n2020
 username Brucewayne privilege 15 secret op10muserPrime!
 crypto key generate rsa general-keys modulus 1024

@@ -11,13 +11,6 @@ username Brucewayne privilege 15 secret op10muserPrime!
 crypto key generate rsa general-keys modulus 1024
 enable secret $cisco!PRIV*
 
-line vty 0 4
-password $cisco!!VTY*
-transport input ssh
-login local
-!exec-timeout 4
-!login block-for 120 attempts 3 within 60
-
 !password
 line con 0
 password cisco
@@ -27,7 +20,8 @@ logging synchronous
 !vty for telnet
 line vty 0 15
 password cisco
-login
+transport input ssh
+login local
 exit
 
 !Opsætning af vlan

@@ -96,7 +96,7 @@ description Default Gateway for (VLAN300)
 interface gigabitethernet 0/0/2.210
 encapsulation dot1Q 210
 ip address 192.168.2.129 255.255.255.224
-description Default Gateway for  Management_Network(VLAN99)
+description Default Gateway for  Management_Network(VLAN210)
 
 interface gigabitethernet 0/0/2
 no shutdown
