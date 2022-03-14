@@ -15,7 +15,7 @@ username secondtonone secret Agreeable2:Showplace:Unable
 !
 enable secret $cisco!PRIV*
 !
-login block-for 120 attempts 3 witin 60
+login block-for 120 attempts 3 within 60
 
 
 ! password
@@ -28,7 +28,7 @@ login
 !VTY for SSH 
 line vty 0 15
 password Amaretto:Envious3
-excec-timeout 4 0
+exec-timeout 4 0
 transport input ssh
 login local
 
@@ -55,7 +55,6 @@ shutdown
 exit
 
 !Opsætning af interfaces
-conf t
 int range g1/0/1-28
 switchport mode access
 switchport access vlan 999

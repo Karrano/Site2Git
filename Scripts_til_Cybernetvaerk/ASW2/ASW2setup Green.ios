@@ -1,7 +1,7 @@
 !TODO Tilføje descriptions til EtherChannels
 
 configure terminal
-hostname DSW1
+hostname ASW2
 enable secret Tricycle8:Magnetize
 ipv6 unicast-routing
 line console 0
@@ -14,7 +14,6 @@ Unauthorized access is strictly prohibited. #
 
 ip domain-name cyber.ntw
 no ip domain lookup
-security password min-length 12
 username secondtonone secret Uncounted:Chill5:Sympathy
 crypto key generate rsa general-keys modulus 1024
 
