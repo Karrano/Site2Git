@@ -13,8 +13,7 @@ Unauthorized access is strictly prohibited. #
 ip domain-name cyber.ntw
 no ip domain lookup
 security password min-length 12
-username Manager secret 55Hadm!n2020
-username Brucewayne privilege 15 secret op10muserPrime!
+username secondtonone secret Agreeable2:Showplace:Unable
 crypto key generate rsa general-keys modulus 1024
 
 login block-for 120 attempts 3 within 60
@@ -96,7 +95,7 @@ description Default Gateway for (VLAN300)
 interface gigabitethernet 0/0/2.210
 encapsulation dot1Q 210
 ip address 192.168.2.129 255.255.255.224
-description Default Gateway for  Management_Network(VLAN99)
+description Default Gateway for  Management_Network(VLAN210)
 
 interface gigabitethernet 0/0/2
 no shutdown
