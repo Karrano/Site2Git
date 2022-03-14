@@ -1,17 +1,14 @@
-!basic switch configuration
 configure terminal
 no ip domain-lookup
 hostname Server_Switch
 ip domain-name cyber.ntw
 service password-encryption
-enable secret Levitate:Imprudent0
 banner motd #
 Unauthorized access is strictly prohibited. #
-ip default-gateway 192.168.1.129
-username Manager secret 55Hadm!n2020
-username Brucewayne privilege 15 secret op10muserPrime!
+ip default-gateway 192.168.2.129
+username secondtonone secret Exclusion:Embassy7:Verbally
 crypto key generate rsa general-keys modulus 1024
-enable secret $cisco!PRIV*
+enable secret Levitate:Imprudent0
 login block-for 120 attempts 3 within 60
 
 !enable ssh

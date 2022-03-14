@@ -2,14 +2,30 @@
 !TODO Implement trust på porte/interfaces selvom opgaven ikke bad os om det ?
 
 configure terminal
-no ip domain-lookup
-hostname DSW2
-service password-encryption
+hostname DSW1
 enable secret Attractor9:Freeway
+ipv6 unicast-routing
+line console 0
+password Drearily4:Jingling
+login
+exit
+service password-encryption
 banner motd #
 Unauthorized access is strictly prohibited. #
-ip routing
-ipv6 unicast-routing
+
+ip domain-name cyber.ntw
+no ip domain lookup
+security password min-length 12
+username secondtonone secret Exclusion:Embassy7:Verbally
+crypto key generate rsa general-keys modulus 1024
+
+login block-for 120 attempts 3 within 60
+line vty 0 4
+password Disabled:Greeting3
+login
+transport input ssh
+login local
+exec-timeout 4
 
 !
 !Opsætning af statiske routes
@@ -50,17 +66,6 @@ ipv6 route 2026:1::/64 2026:4::1
 ipv6 route 2026:21::/64 2026:4::1
 ipv6 route 2026:50::/64 2026:4::1
 
-! password
-line con 0
-password Drearily4:Jingling
-login
-logging synchronous
-
-! vty for telnet
-line vty 0 15
-password Disabled:Greeting3
-login
-exit
 
 ip dhcp snooping
 ip dhcp snooping vlan 10

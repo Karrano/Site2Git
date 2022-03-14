@@ -26,9 +26,9 @@ ip route 0.0.0.0 0.0.0.0 10.11.0.2
 ip route 10.3.0.0 255.255.255.224 10.3.0.1
 ipv6 route 2026:50::/64 2026:50::1
 !Default Route Vlan 200
-ip route 192.168.1.128 255.255.255.224 192.168.1.129
+ip route 192.168.1.128 255.255.255.224 10.5.0.1
 !Default Route Vlan 210
-ip route 192.168.2.128 255.255.255.224 192.168.2.129
+ip route 192.168.2.128 255.255.255.224 10.5.0.1
 !INTERNET SUMMARY ROUTE
 ip route 10.0.0.0 255.0.0.0 10.5.0.1
 
@@ -48,14 +48,14 @@ interface gigabitethernet 0/0/0
 ip address 10.5.0.2 255.255.255.252
 ipv6 address 2026:1::1/64
 ipv6 address FE80::1 link-local
-ip nat inside
+!ip nat inside
 description CoreSwitch
 no shutdown
 
 interface gigabitethernet 0/0/1
 ip address 10.11.0.1 255.255.255.224
 !ip access-group 30 in
-ip nat outside
+!ip nat outside
 description ServerSwitch
 no shutdown
 
@@ -65,17 +65,17 @@ description Loopback
 no shutdown
 exit
 
-ip nat inside source list Nat_Traffic interface GigabitEthernet0/0/1 overload
+!ip nat inside source list Nat_Traffic interface GigabitEthernet0/0/1 overload
 
-ip access-list standard Nat_Traffic
- permit 10.1.0.0 0.0.255.255
- permit 10.2.0.0 0.0.255.255
- permit 10.3.0.0 0.0.255.255
- permit 10.5.0.0 0.0.255.255
- permit 192.168.1.128 0.0.0.31
- permit 192.168.2.128 0.0.0.31
-access-list 30 permit 10.11.0.0 0.0.0.7
-access-list 30 deny 10.1.0.0 0.0.255.255
-access-list 30 deny 10.2.0.0 0.0.255.255
+!ip access-list standard Nat_Traffic
+! permit 10.1.0.0 0.0.255.255
+! permit 10.2.0.0 0.0.255.255
+! permit 10.3.0.0 0.0.255.255
+! permit 10.5.0.0 0.0.255.255
+! permit 192.168.1.128 0.0.0.31
+! permit 192.168.2.128 0.0.0.31
+!access-list 30 permit 10.11.0.0 0.0.0.7
+!access-list 30 deny 10.1.0.0 0.0.255.255
+!access-list 30 deny 10.2.0.0 0.0.255.255
 
 do wr

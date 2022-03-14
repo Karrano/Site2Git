@@ -1,32 +1,33 @@
 !TODO Tilføje descriptions til EtherChannels
 
 configure terminal
-no ip domain-lookup
-hostname ASW1
-service password-encryption
+hostname DSW1
 enable secret Tricycle8:Magnetize
+ipv6 unicast-routing
+line console 0
+password Unify:Stoplight4
+login
+exit
+service password-encryption
 banner motd #
 Unauthorized access is strictly prohibited. #
-ip routing
-ipv6 unicast-routing
 
-! SVI CONF step 2
-ip default-gateway 192.168.1.129
+ip domain-name cyber.ntw
+no ip domain lookup
+security password min-length 12
+username secondtonone secret Uncounted:Chill5:Sympathy
+crypto key generate rsa general-keys modulus 1024
+
+login block-for 120 attempts 3 within 60
+line vty 0 4
+password Definite:Uncurled3
+login
+transport input ssh
+login local
+exec-timeout 4
 
 ip route 0.0.0.0 0.0.0.0 192.168.1.129
 
-! password
-line con 0
-password Unify:Stoplight4
-login
-logging synchronous
-exit
-
-! vty for telnet
-! TODO Slet TelNet og opsæt SSH
-line vty 0 15
-password Definite:Uncurled3
-login
 
 !
 !Opsætning af Vlans: Navn

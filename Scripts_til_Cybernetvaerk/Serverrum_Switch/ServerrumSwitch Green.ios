@@ -1,36 +1,28 @@
 configure terminal
-no ip domain-lookup
-hostname ServerRum_Switch
-ip domain-name cyber.ntw
+hostname ServerrumSwitch
+enable secret Levitate:Imprudent0
+ipv6 unicast-routing
+line console 0
+password Basin:Storable8
+login
+exit
 service password-encryption
 banner motd #
 Unauthorized access is strictly prohibited. #
-ip default-gateway 192.168.1.129
-username Manager secret 55Hadm!n2020
-username Brucewayne privilege 15 secret op10muserPrime!
-crypto key generate rsa general-keys modulus 1024
-enable secret Levitate:Imprudent0
 
+ip domain-name cyber.ntw
+no ip domain lookup
+security password min-length 12
+username secondtonone secret Exclusion:Embassy7:Verbally
+crypto key generate rsa general-keys modulus 1024
+
+login block-for 120 attempts 3 within 60
 line vty 0 4
-password $cisco!!VTY*
+password Apache:Undress3
 login
 transport input ssh
 login local
 exec-timeout 4
-login block-for 120 attempts 3 within 60
-
-!password
-line con 0
-password Basin:Storable8
-login
-logging synchronous
-
-!vty for telnet
-line vty 0 15
-password Apache:Undress3
-login
-exit
-
 !Opsætning af vlan
 vlan 50
 no shutdown
@@ -64,7 +56,7 @@ switchport access vlan 999
 switchport nonegotiate
 shutdown
 
-interface range Gi1/0/1 - 4
+interface range Gi1/0/1 - 6
 switchport access Vlan 50
 spanning-tree bpduguard enable
 no shutdown
