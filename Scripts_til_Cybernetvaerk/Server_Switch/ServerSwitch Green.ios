@@ -3,23 +3,31 @@ no ip domain-lookup
 hostname Server_Switch
 ip domain-name cyber.ntw
 service password-encryption
+enable secret Levitate:Imprudent0
 banner motd #
 Unauthorized access is strictly prohibited. #
 ip default-gateway 192.168.2.129
+
+ip routing
+ipv6 unicast-routing
+
 username secondtonone secret Exclusion:Embassy7:Verbally
-crypto key generate rsa general-keys modulus 1024
-enable secret Levitate:Imprudent0
+crypto key generate rsa general-keys modulus 2048
 login block-for 120 attempts 3 within 60
+ip ssh version 2
 
 !enable ssh
-line vty 0 4
-password Apache:Undress3
+line vty 0 15
+!password Apache:Undress3
+exec-timeout 4 0
 transport input ssh
-login local 
+!login local
+login
 
 !password
 line con 0
 password Basin:Storable8
+exec-timeout 4 0
 login
 logging synchronous
 
@@ -57,7 +65,6 @@ switchport trunk allowed vlan 1,50,99,210,300
 no switchport access vlan 999
 no shutdown
 
-! Trunk
 interface g1/0/7
 switchport mode access
 switchport access vlan 300
@@ -69,6 +76,5 @@ switchport trunk allowed vlan 1,50,99,210,300
 switchport trunk native vlan 99
 no switchport access vlan 999
 no shutdown
-
 end
 wr

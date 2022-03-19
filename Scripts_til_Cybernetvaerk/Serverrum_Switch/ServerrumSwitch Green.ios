@@ -1,28 +1,36 @@
 configure terminal
+no ip domain-lookup
 hostname ServerrumSwitch
-enable secret Levitate:Imprudent0
-ipv6 unicast-routing
-line console 0
-password Basin:Storable8
-login
-exit
+ip domain-name cyber.ntw
 service password-encryption
+enable secret Levitate:Imprudent0
 banner motd #
 Unauthorized access is strictly prohibited. #
+ip default-gateway 192.168.2.129
 
-ip domain-name cyber.ntw
-no ip domain lookup
-security password min-length 12
+ip routing
+ipv6 unicast-routing
+
 username secondtonone secret Exclusion:Embassy7:Verbally
-crypto key generate rsa general-keys modulus 1024
-
+crypto key generate rsa general-keys modulus 2048
+ip ssh version 2
 login block-for 120 attempts 3 within 60
-line vty 0 4
-password Apache:Undress3
-login
+
+!enable ssh
+line vty 0 15
+!password Apache:Undress3
+exec-timeout 4 0
 transport input ssh
-login local
-exec-timeout 4
+!login local
+login
+
+!password
+line con 0
+password Basin:Storable8
+exec-timeout 4 0
+login
+logging synchronous
+
 !Opsætning af vlan
 vlan 50
 no shutdown
@@ -66,6 +74,12 @@ switchport access vlan 300
 spanning-tree bpduguard enable
 no shutdown
 
+interface g1/0/24
+switchport mode trunk
+!switchport trunk native vlan 99
+no switchport access vlan 999
+no shutdown
+
 interface g1/0/25
 switchport mode trunk
 switchport trunk native vlan 99
@@ -78,6 +92,9 @@ switchport mode trunk
 switchport trunk native vlan 99
 no switchport access vlan 999
 no shutdown
+
+monitor session 1 source interface Gi1/0/1 - 23 , Gi1/0/25 - 28
+monitor session 1 destination interface Gi1/0/24
 
 end
 wr

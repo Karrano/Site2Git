@@ -16,7 +16,8 @@ ip domain-name cyber.ntw
 no ip domain lookup
 security password min-length 12
 username secondtonone secret Uncounted:Chill5:Sympathy
-crypto key generate rsa general-keys modulus 1024
+crypto key generate rsa general-keys modulus 2048
+ip ssh version 2
 
 login block-for 120 attempts 3 within 60
 line vty 0 4

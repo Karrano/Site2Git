@@ -2,30 +2,38 @@
 !TODO Implement trust på porte/interfaces selvom opgaven ikke bad os om det ?
 
 configure terminal
+no ip domain lookup
 hostname DSW1
-enable secret Attractor9:Freeway
-ipv6 unicast-routing
-line console 0
-password Drearily4:Jingling
-login
-exit
+ip domain-name cyber.ntw
 service password-encryption
+enable secret Attractor9:Freeway
 banner motd #
 Unauthorized access is strictly prohibited. #
 
-ip domain-name cyber.ntw
-no ip domain lookup
-security password min-length 12
-username secondtonone secret Exclusion:Embassy7:Verbally
-crypto key generate rsa general-keys modulus 1024
+ipv6 unicast-routing
+ip routing 
 
+username secondtonone secret Exclusion:Embassy7:Verbally
+crypto key generate rsa general-keys modulus 2048
+ip ssh version 2
 login block-for 120 attempts 3 within 60
-line vty 0 4
-password Disabled:Greeting3
-login
-transport input ssh
-login local
+
+line vty 0 15
+!password Disabled:Greeting3
 exec-timeout 4
+transport input ssh
+login
+!login local
+
+
+line console 0
+password Drearily4:Jingling
+exec-timeout 4
+login
+logging synchronous
+exit
+
+
 
 !
 !Opsætning af statiske routes
@@ -105,6 +113,7 @@ interface vlan 10
 ip address 10.2.1.1 255.255.255.0
 ip helper-address 10.1.21.129 
 ipv6 dhcp relay destination FEC0::21:1
+!Giver advarsel: Warning: IPv6 is not enabled on the interface Considering global vrf for relay destination
 ipv6 address 2026:10::1/64
 standby version 2
 standby 10 ip 10.2.1.254
@@ -116,6 +125,7 @@ interface vlan 20
 ip address 10.2.2.1 255.255.255.0
 ip helper-address 10.1.21.129
 ipv6 dhcp relay destination FEC0::21:1 
+!Giver advarsel: Warning: IPv6 is not enabled on the interface Considering global vrf for relay destination
 ipv6 address 2026:20::1/64
 standby version 2
 standby 20 ip 10.2.2.254
