@@ -53,10 +53,9 @@ shutdown
 exit
 
 !Opsætning af interfaces
-conf t
 int range g1/0/1-28
 switchport mode access
-switchport acces vlan 999
+switchport access vlan 999
 switchport nonegotiate
 shutdown
 
@@ -71,6 +70,7 @@ switchport trunk native vlan 99
 !spanning-tree bpduguard enable
 no switchport access vlan 999
 no shutdown
+
 int g1/0/2
 switchport mode trunk
 switchport trunk native vlan 99
